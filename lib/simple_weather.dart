@@ -15,9 +15,6 @@ class SimpleWeather extends StatelessWidget {
       title: 'SimpleWeather',
       debugShowCheckedModeBanner: false,
       restorationScopeId: 'simpleWeather',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
       routes: routes,
       builder: (context, child) {
         return child!;
