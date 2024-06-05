@@ -21,7 +21,7 @@ class LoginCubit extends Cubit<LoginState> {
         email: email,
         password: password,
       );
-      emit(LoginSuccess());
+      emit(LoginSuccess(email));
     } on ProviderException catch (error) {
       emit(LoginError(error.message));
     } on DioException catch (error) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_weather/auth/data/providers/auth_provider.dart';
 import 'package:simple_weather/auth/logic/login_cubit/login_cubit.dart';
+import 'package:simple_weather/core/logic/session/session_cubit.dart';
 import 'package:simple_weather/core/presentation/widgets/simple_weather_logo.dart';
 import 'package:simple_weather/core/presentation/widgets/sized_outlined_button.dart';
 
@@ -70,6 +71,7 @@ class _LoginPageViewState extends State<LoginPageView> {
           );
         }
         if (state is LoginSuccess) {
+          BlocProvider.of<SessionCubit>(context).login(authToken: state.token);
           Navigator.pushNamed(context, '/weather');
         }
       },

@@ -12,4 +12,7 @@ final class LoginError extends LoginState {
   LoginError(this.errorMessage);
 }
 
-final class LoginSuccess extends LoginState {}
+final class LoginSuccess extends LoginState {
+  final String token;
+  LoginSuccess(this.token);
+}
