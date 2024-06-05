@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
+  geolocator: ^11.1.0
   google_fonts: 6.1.0
   meta: ^1.9.1
 
