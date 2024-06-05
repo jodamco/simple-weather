@@ -1,81 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simple_weather/core/presentation/widgets/simple_weather_logo.dart';
-import 'package:simple_weather/weather/data/models/weather.dart';
-
-import 'widgets/info_card.dart';
-import 'widgets/info_stack_card.dart';
-import 'widgets/temperature_hero.dart';
-import 'widgets/wind_card.dart';
+import 'package:simple_weather/weather/data/providers/geo_localization_provider.dart';
+import 'package:simple_weather/weather/data/providers/open_weather_provider.dart';
+import 'package:simple_weather/weather/logic/current_weather/current_weather_cubit.dart';
+import 'package:simple_weather/weather/presentation/current_weather_page/widgets/empty_weather_placeholder.dart';
+import 'package:simple_weather/weather/presentation/current_weather_page/widgets/loading_weather_placeholder.dart';
+import 'package:simple_weather/weather/presentation/current_weather_page/widgets/weather_data.dart';
 
 class CurrentWeatherPage extends StatelessWidget {
-  final CurrentWeather currentWeather;
-
-  const CurrentWeatherPage({super.key, required this.currentWeather});
-
-  String getHourFromEpoch(int epochValue) {
-    final date = DateTime.fromMillisecondsSinceEpoch(epochValue);
-    return '${date.hour}:${date.minute}';
-  }
+  const CurrentWeatherPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const SimpleWeatherLogo(),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TemperatureHero(weather: currentWeather),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    WindCard(
-                      windDeg: currentWeather.windDeg,
-                      windSpeed: currentWeather.windSpeed,
-                    ),
-                    InfoCard(
-                      data: getHourFromEpoch(currentWeather.sunrise),
-                      subtitle: 'Sunrise',
-                      icon: const Icon(
-                        Icons.wb_sunny,
-                        size: 40,
-                      ),
-                    ),
-                    InfoCard(
-                      data: getHourFromEpoch(currentWeather.sunset),
-                      subtitle: 'Sunset',
-                      icon: const Icon(
-                        Icons.nights_stay_rounded,
-                        size: 40,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 8.0),
-                Expanded(
-                  child: InfoStackCard(
-                    info: {
-                      'Humidity': '${currentWeather.humidity}%',
-                      'Feels like':
-                          '${currentWeather.feelsLike.toStringAsFixed(0)}°C',
-                      'Dew Point':
-                          '${currentWeather.dewPoint.toStringAsFixed(1)}°C',
-                      'UV Index': '${currentWeather.uvi}',
-                      'Pressure': '${currentWeather.pressure}hPa',
-                      'Cloudiness': '${currentWeather.clouds}%',
-                      'Visibility': '${currentWeather.visibility} m',
-                    },
-                  ),
-                )
-              ],
+    return BlocProvider(
+      create: (context) => CurrentWeatherCubit(
+        weatherProvider: OpenWeatherProvider(),
+        geoLocalProvider: GeoLocalizationProvider(),
+      )..fetchWeatherData(),
+      child: const CurrentWeatherPageView(),
+    );
+  }
+}
+
+class CurrentWeatherPageView extends StatelessWidget {
+  const CurrentWeatherPageView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<CurrentWeatherCubit, CurrentWeatherState>(
+      listener: (context, state) {
+        if (state is CurrentWeatherError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
             ),
-          ],
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const SimpleWeatherLogo(),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: BlocBuilder<CurrentWeatherCubit, CurrentWeatherState>(
+            builder: (context, state) {
+              switch (state) {
+                case CurrentWeatherIdle():
+                case CurrentWeatherError():
+                  return const EmptyWeatherPlaceholder();
+                case CurrentWeatherLoading():
+                  return const LoadingWeatherPlaceholder();
+                case CurrentWeatherData():
+                  return WeatherDataDisplay(weatherData: state.weather);
+              }
+            },
+          ),
         ),
       ),
     );

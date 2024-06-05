@@ -1,43 +1,44 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:meta/meta.dart';
+import 'package:simple_weather/core/data/models/custom_exception.dart';
 import 'package:simple_weather/weather/data/interfaces/weather_provider.dart';
 import 'package:simple_weather/weather/data/models/weather.dart';
 
 class OpenWeatherProvider implements WeatherProvider {
+  late Dio dio;
+
+  OpenWeatherProvider({
+    @visibleForTesting Dio? dio,
+  }) : dio = dio ??
+            Dio(
+              BaseOptions(
+                baseUrl: 'https://api.openweathermap.org/data/3.0/',
+              ),
+            );
+
   @override
   Future<WeatherResponse> fetchWeatherByCoordinates({
     required double lat,
     required double long,
   }) async {
-    return await Future.delayed(const Duration(seconds: 3), () {
-      return WeatherResponse.fromJson({
-        "lat": 33.44,
-        "lon": -94.04,
-        "timezone": "America/Chicago",
-        "timezone_offset": -18000,
-        "current": {
-          "dt": 1684929490,
-          "sunrise": 1684926645,
-          "sunset": 1684977332,
-          "temp": 292.55,
-          "feels_like": 292.87,
-          "pressure": 1014,
-          "humidity": 89,
-          "dew_point": 290.69,
-          "uvi": 0.16,
-          "clouds": 53,
-          "visibility": 10000,
-          "wind_speed": 3.13,
-          "wind_deg": 93,
-          "wind_gust": 6.71,
-          "weather": [
-            {
-              "id": 803,
-              "main": "Clouds",
-              "description": "broken clouds",
-              "icon": "04d"
-            }
-          ]
-        },
+    try {
+      final response = await dio.get('onecall', queryParameters: {
+        "lat": lat,
+        'lon': long,
+        'exclude': 'minutely,hourly,daily,alerts',
+        'units': 'metric',
+        'appid': dotenv.env['OPEN_WEATHER_APP_KEY'].toString()
       });
-    });
+      return WeatherResponse.fromJson(response.data);
+    } on DioException catch (error) {
+      if (error.response != null) {
+        throw ProviderException(error.response?.data);
+      } else {
+        throw ProviderException(error.message ?? "Couldn't complete API call");
+      }
+    } catch (_) {
+      throw ProviderException("Couldn't parse response from Weather API");
+    }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:simple_weather/core/data/models/custom_exception.dart';
 import 'package:simple_weather/weather/data/interfaces/weather_provider.dart';
@@ -40,8 +39,6 @@ class CurrentWeatherCubit extends Cubit<CurrentWeatherState> {
       emit(CurrentWeatherData(currentWeather));
     } on ProviderException catch (error) {
       emit(CurrentWeatherError(error.message));
-    } on DioException catch (error) {
-      emit(CurrentWeatherError(error.message ?? error.toString()));
     } catch (error) {
       emit(CurrentWeatherError(error.toString()));
     }

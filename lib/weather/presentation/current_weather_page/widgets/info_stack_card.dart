@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class InfoStackCard extends StatelessWidget {
   final Map<String, String> info;
@@ -26,11 +27,16 @@ class InfoStackCard extends StatelessWidget {
                 children: [
                   Text(
                     entry.key,
-                    style: TextStyle(fontSize: 16),
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                    ),
                   ),
                   Text(
                     entry.value,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
