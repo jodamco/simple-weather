@@ -35,6 +35,13 @@ class SimpleWeatherView extends StatelessWidget {
       title: 'SimpleWeather',
       debugShowCheckedModeBanner: false,
       restorationScopeId: 'simpleWeather',
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFF12711),
+          brightness: Brightness.light,
+        ),
+        useMaterial3: true,
+      ),
       initialRoute: '/',
       routes: routes,
       builder: (context, child) {

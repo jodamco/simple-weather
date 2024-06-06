@@ -1,11 +1,15 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_weather/auth/data/providers/auth_provider.dart';
 import 'package:simple_weather/auth/logic/login_cubit/login_cubit.dart';
 import 'package:simple_weather/core/logic/session/session_cubit.dart';
-import 'package:simple_weather/core/presentation/widgets/simple_weather_logo.dart';
-import 'package:simple_weather/core/presentation/widgets/sized_outlined_button.dart';
+import 'package:simple_weather/core/presentation/widgets/colorful_scaffold.dart';
+import 'package:simple_weather/core/presentation/widgets/simple_weather_display_logo.dart';
+import 'package:simple_weather/auth/presentation/login_page/widgets/sized_button.dart';
+
+import 'widgets/custom_text_input.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -28,14 +32,22 @@ class LoginPageView extends StatefulWidget {
   State<LoginPageView> createState() => _LoginPageViewState();
 }
 
-class _LoginPageViewState extends State<LoginPageView> {
+class _LoginPageViewState extends State<LoginPageView>
+    with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  late AnimationController _rotationController;
+
   @override
   void initState() {
     super.initState();
+
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat(reverse: false);
   }
 
   @override
@@ -75,36 +87,33 @@ class _LoginPageViewState extends State<LoginPageView> {
           Navigator.pushNamed(context, '/weather');
         }
       },
-      child: Scaffold(
-        backgroundColor: const Color(0xFFEFEFEF),
-        body: Padding(
+      child: ColorfulScaffold(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 400.0),
           padding: const EdgeInsets.symmetric(
             horizontal: 56,
             vertical: 68,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SimpleWeatherLogo(),
-              const SizedBox(height: 16),
+              SimpleWeatherDisplayLogo(
+                animationController: _rotationController,
+              ),
+              const SizedBox(height: 32.0),
               Form(
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextFormField(
+                    CustomTextInput(
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       controller: _emailController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        labelText: "Email",
-                      ),
+                      labelText: "Email",
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';
@@ -114,37 +123,37 @@ class _LoginPageViewState extends State<LoginPageView> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 12.0),
-                    TextFormField(
+                    const SizedBox(height: 16.0),
+                    CustomTextInput(
+                      controller: _passwordController,
+                      labelText: 'Password',
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.done,
-                      controller: _passwordController,
                       obscureText: true,
                       enableSuggestions: false,
                       autocorrect: false,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        labelText: "Password",
-                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
                         }
                         return null;
                       },
-                    ),
+                    )
                   ],
                 ),
               ),
               const SizedBox(height: 24.0),
               BlocBuilder<LoginCubit, LoginState>(
                 builder: (context, state) {
-                  return SizedOutlinedButton(
+                  return SizedButton(
                     onPressed: _handleLogin,
                     isLoading: state is LoginLoading,
-                    child: const Text("Log In"),
+                    child: Text(
+                      "Log In",
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   );
                 },
               ),

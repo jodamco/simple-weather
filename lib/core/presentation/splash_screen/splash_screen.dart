@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_weather/core/logic/session/session_cubit.dart';
+import 'package:simple_weather/core/presentation/widgets/colorful_scaffold.dart';
+
+import '../widgets/simple_weather_display_logo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -50,36 +53,11 @@ class _SplashScreenState extends State<SplashScreen>
       context,
     ).state;
 
-    return Scaffold(
-      body: Padding(
+    return ColorfulScaffold(
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            RotationTransition(
-              turns: Tween(begin: 0.0, end: 1.0).animate(_rotationController),
-              child: const Icon(
-                Icons.wb_sunny_rounded,
-                color: Color(0xFF3F3F3F),
-                size: 50,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Simple Weather',
-                  style: GoogleFonts.tinos(
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF3F3F3F),
-                  ),
-                ),
-              ],
-            )
-          ],
+        child: SimpleWeatherDisplayLogo(
+          animationController: _rotationController,
         ),
       ),
     );
