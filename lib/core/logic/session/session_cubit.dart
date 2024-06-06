@@ -34,7 +34,7 @@ class SessionCubit extends Cubit<SessionState> {
 
   Future<void> logout() async {
     try {
-      await tokenRepository.deleteAll();
+      await tokenRepository.deleteToken();
       emit(SessionLoggedOut());
     } catch (error) {
       emit(SessionLoggedOut());

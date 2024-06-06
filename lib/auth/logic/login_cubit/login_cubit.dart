@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:simple_weather/auth/data/providers/auth_provider.dart';
 import 'package:simple_weather/core/data/models/custom_exception.dart';
@@ -24,8 +23,6 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccess(email));
     } on ProviderException catch (error) {
       emit(LoginError(error.message));
-    } on DioException catch (error) {
-      emit(LoginError(error.message ?? error.toString()));
     } catch (error) {
       emit(LoginError(error.toString()));
     }

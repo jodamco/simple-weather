@@ -1,10 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenRepository {
-  static TokenRepository? _instance;
+  @visibleForTesting
+  static TokenRepository? instance;
 
-  factory TokenRepository() =>
-      _instance ??= TokenRepository._(const FlutterSecureStorage());
+  factory TokenRepository({storageStrategy}) => instance ??=
+      TokenRepository._(storageStrategy ?? const FlutterSecureStorage());
 
   TokenRepository._(this._storage);
 
@@ -26,9 +28,5 @@ class TokenRepository {
 
   Future<void> persistToken(String token) async {
     await _storage.write(key: _tokenKey, value: token);
-  }
-
-  Future<void> deleteAll() async {
-    await _storage.delete(key: _tokenKey);
   }
 }
