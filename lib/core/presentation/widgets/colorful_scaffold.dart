@@ -17,10 +17,7 @@ class ColorfulScaffold extends StatelessWidget {
               end: Alignment.topLeft,
               colors: [Color(0xFFF5AF19), Color(0xFFF12711)]),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [child],
-        ),
+        child: child,
       ),
     );
   }

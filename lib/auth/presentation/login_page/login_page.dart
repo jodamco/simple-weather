@@ -88,9 +88,8 @@ class _LoginPageViewState extends State<LoginPageView>
         }
       },
       child: ColorfulScaffold(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 400.0),
-          padding: const EdgeInsets.symmetric(
+        child: Padding(
+           padding: const EdgeInsets.symmetric(
             horizontal: 56,
             vertical: 68,
           ),

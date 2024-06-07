@@ -38,10 +38,10 @@ class CustomTextInput extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
         border: InputBorder.none,
-        labelStyle: GoogleFonts.inter(color: Color(0xFF4c0b04)) ,
+        labelStyle: GoogleFonts.inter(color: const Color(0xFF4c0b04)),
         errorStyle: GoogleFonts.inter(
           color: Colors.white,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
