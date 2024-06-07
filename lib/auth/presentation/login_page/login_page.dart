@@ -98,8 +98,11 @@ class _LoginPageViewState extends State<LoginPageView>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SimpleWeatherDisplayLogo(
-                animationController: _rotationController,
+              Hero(
+                tag: "simpleWeatherDisplayLogo",
+                child: SimpleWeatherDisplayLogo(
+                  animationController: _rotationController,
+                ),
               ),
               const SizedBox(height: 32.0),
               Form(

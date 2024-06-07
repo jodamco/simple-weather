@@ -50,13 +50,17 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     _sessionState = BlocProvider.of<SessionCubit>(
       context,
+      listen: true,
     ).state;
 
     return ColorfulScaffold(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SimpleWeatherDisplayLogo(
-          animationController: _rotationController,
+        child: Hero(
+          tag: "simpleWeatherDisplayLogo",
+          child: SimpleWeatherDisplayLogo(
+            animationController: _rotationController,
+          ),
         ),
       ),
     );
