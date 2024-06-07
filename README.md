@@ -2,6 +2,13 @@
 
 Test application to display flutter capacities
 
+## How to run
+
+1. Clone the repository
+2. Run `flutter pub get` to install dependencies
+3. Create a `dotenv` file on the root of the project with `OPEN_WEATHER_APP_KEY` key and your open weather app key
+4. Run `flutter run -d <desired_device>`
+
 ## Architechture
 
 The project follows a Domain based architecture, a less rigid form of Clean Architecture. On the domain, sets of features may share same widgets, repositories and logic to acomplish the desired tasks. 
