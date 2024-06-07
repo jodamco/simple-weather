@@ -7,19 +7,20 @@ class SimpleWeatherLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           'Simple Weather',
-          style: GoogleFonts.tinos(
+          style: GoogleFonts.montserrat(
             fontSize: 32.0,
             fontWeight: FontWeight.w600,
-            color: const Color(0xFF3F3F3F),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         const SizedBox(width: 12),
-        const Icon(
+        Icon(
           Icons.wb_sunny_rounded,
-          color: Color(0xFF3F3F3F),
+          color: Theme.of(context).colorScheme.onSurface,
           size: 30,
         )
       ],

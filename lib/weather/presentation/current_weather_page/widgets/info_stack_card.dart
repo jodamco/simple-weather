@@ -12,12 +12,18 @@ class InfoStackCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 2,
+      color: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 10.0,
           horizontal: 16.0,
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: info.entries.map((entry) {
             return Padding(

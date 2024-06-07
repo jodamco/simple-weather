@@ -21,6 +21,7 @@ class LoadingWeatherPlaceholder extends StatelessWidget {
             ),
             const SizedBox(height: 24.0),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(

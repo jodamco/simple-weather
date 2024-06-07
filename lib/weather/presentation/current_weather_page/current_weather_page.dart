@@ -45,22 +45,43 @@ class CurrentWeatherPageView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const SimpleWeatherLogo(),
+          toolbarHeight: 80,
+          flexibleSpace: Container(
+            color: const Color(0xFFFDFDFD),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [SimpleWeatherLogo()],
+            ),
+          ),
+          automaticallyImplyLeading: false,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: BlocBuilder<CurrentWeatherCubit, CurrentWeatherState>(
-            builder: (context, state) {
-              switch (state) {
-                case CurrentWeatherIdle():
-                case CurrentWeatherError():
-                  return const EmptyWeatherPlaceholder();
-                case CurrentWeatherLoading():
-                  return const LoadingWeatherPlaceholder();
-                case CurrentWeatherData():
-                  return WeatherDataDisplay(weatherData: state.weather);
-              }
-            },
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                stops: [0, 0.2, 0.6],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Color(0xFFF5AF19),
+                  Color.fromARGB(255, 243, 212, 145),
+                  Color(0xFFFDFDFD)
+                ]),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: BlocBuilder<CurrentWeatherCubit, CurrentWeatherState>(
+              builder: (context, state) {
+                switch (state) {
+                  case CurrentWeatherIdle():
+                  case CurrentWeatherError():
+                    return const EmptyWeatherPlaceholder();
+                  case CurrentWeatherLoading():
+                    return const LoadingWeatherPlaceholder();
+                  case CurrentWeatherData():
+                    return WeatherDataDisplay(weatherData: state.weather);
+                }
+              },
+            ),
           ),
         ),
       ),
