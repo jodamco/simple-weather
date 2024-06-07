@@ -92,12 +92,12 @@ void main() {
             .having(
               (p0) => p0.weather.sunset,
               "Sunset epoch time",
-              (1684977332 - 18000),
+              (1684977332),
             )
             .having(
               (p0) => p0.weather.sunrise,
               "Sunrise epoch time",
-              (1684926645 - 18000),
+              (1684926645),
             ),
       ],
     );

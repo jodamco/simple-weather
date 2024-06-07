@@ -33,8 +33,6 @@ class CurrentWeatherCubit extends Cubit<CurrentWeatherState> {
       );
 
       final currentWeather = weatherData.current;
-      currentWeather.sunrise += weatherData.timezoneOffset;
-      currentWeather.sunset += weatherData.timezoneOffset;
 
       emit(CurrentWeatherData(currentWeather));
     } on ProviderException catch (error) {
